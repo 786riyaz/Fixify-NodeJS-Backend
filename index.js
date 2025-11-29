@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -25,10 +26,6 @@ const accessLogStream = fs.createWriteStream(
   { flags: "a" }
 );
 
-// Morgan formats:
-// "dev"  → quick colored logs in console
-// "combined" → Apache-style logs saved into file
-
 // Show logs in console
 app.use(morgan("dev"));
 
@@ -44,6 +41,7 @@ app.use("/", require("./routes/serviceRoutes"));
 
 // Root
 app.get("/", (req, res) => {
+  console.log("✓ Server is running");
   res.send("Hello World!");
 });
 

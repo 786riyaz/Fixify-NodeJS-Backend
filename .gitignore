@@ -7,3 +7,4 @@ coverage/
 .idea/
 npm-debug.log
 yarn-error.log
+logs/
