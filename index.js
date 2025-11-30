@@ -4,34 +4,24 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const morgan = require("morgan");
+const cors = require("cors");
 const connectDB = require("./config/db");
+const { logStream } = require("./utils/logger");
 
 // Connect DB
 connectDB();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
-// ---------------- MORGAN LOGGING ----------------
-
-// Create logs folder if not exists
-const logsPath = path.join(__dirname, "logs");
-if (!fs.existsSync(logsPath)) {
-  fs.mkdirSync(logsPath);
-}
-
-// Create write stream for access.log
-const accessLogStream = fs.createWriteStream(
-  path.join(logsPath, "access.log"),
-  { flags: "a" }
-);
-
+// --------------------------------------------------
+// Setup Morgan for logging
 // Show logs in console
 app.use(morgan("dev"));
 
-// Save logs to access.log file
-app.use(morgan("combined", { stream: accessLogStream }));
-
+// Morgan logs + API logs → SAME FILE
+app.use(morgan("combined", { stream: logStream }));
 // --------------------------------------------------
 
 // Routes
@@ -39,7 +29,7 @@ app.use("/", require("./routes/userRoutes"));
 app.use("/", require("./routes/authRoutes"));
 app.use("/", require("./routes/serviceRoutes"));
 
-// Root
+// Root Endpoint for testing
 app.get("/", (req, res) => {
   console.log("✓ Server is running");
   res.send("Hello World!");

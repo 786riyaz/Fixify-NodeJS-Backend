@@ -6,6 +6,9 @@ const router = express.Router();
 // GET - All Services
 router.get("/getAllServicesData", async (req, res) => {
   try {
+    console.log("--------------------------");
+    console.log("Fetching all services data");
+    console.log("--------------------------");
     const services = await Service.find().select({ _id: 0, __v: 0 });
 
     res.status(200).json({
