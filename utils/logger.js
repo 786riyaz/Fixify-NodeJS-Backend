@@ -1,21 +1,36 @@
-const fs = require("fs");
 const path = require("path");
+const winston = require("winston");
+require("winston-daily-rotate-file");
 
-// Create logs folder if not exists
-const logsPath = path.join(__dirname, "..", "logs");
-if (!fs.existsSync(logsPath)) {
-  fs.mkdirSync(logsPath);
-}
+// Log folder
+const logDir = path.join(__dirname, "..", "logs");
 
-// Create ONE log file for everything
-const logFilePath = path.join(logsPath, "combined.log");
-const logStream = fs.createWriteStream(logFilePath, { flags: "a" });
+// Daily Rotate Transport
+const dailyTransport = new winston.transports.DailyRotateFile({
+  dirname: logDir,                    // logs folder
+  filename: "%DATE%.log",             // 2025-12-01.log
+  datePattern: "YYYY-MM-DD",
+  zippedArchive: true,                // compress old logs
+  maxSize: "10m",                     // rotate every 10 MB
+  maxFiles: "14d",                    // keep logs for 14 days
+});
 
-// Custom logger
-function log(message) {
-  const logLine = `[${new Date().toISOString()}] ${message}\n`;
-  console.log(logLine);        // print to console
-  logStream.write(logLine);    // write to combined.log
-}
+// Create Logger
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()             // structured logs
+  ),
+  transports: [
+    new winston.transports.Console(), // console logs
+    dailyTransport                    // rotating log file
+  ],
+});
 
-module.exports = { log, logStream };
+// Export stream for Morgan
+const stream = {
+  write: (message) => logger.info(message.trim())
+};
+
+module.exports = { logger, stream };

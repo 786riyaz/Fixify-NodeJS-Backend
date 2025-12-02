@@ -9,44 +9,76 @@ const router = express.Router();
 // REGISTER USER
 router.post("/registerUser", async (req, res) => {
   try {
-    const { name, email, phone, password, role } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+      role,
+      avatarUrl,
+      addresses,
+    } = req.body;
 
-    if (!name || !email || !phone || !password) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+    // --- Basic Validation ---
+    if (!firstName || !lastName || !email || !phone || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "firstName, lastName, email, phone and password are required",
+      });
     }
 
-    // Check duplicates
+    // --- Duplication Checks ---
     if (await User.findOne({ email })) {
-      return res.status(400).json({ success: false, message: "Email already registered" });
-    }
-    if (await User.findOne({ phone })) {
-      return res.status(400).json({ success: false, message: "Phone already registered" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Email already registered" });
     }
 
+    if (await User.findOne({ phone })) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Phone already registered" });
+    }
+
+    // --- Hash Password ---
     const passwordHash = await bcrypt.hash(password, 10);
 
+    // --- Create User ---
     const newUser = await User.create({
-      name,
+      firstName,
+      lastName,
       email,
       phone,
       passwordHash,
       role: role || "customer",
+      avatarUrl: avatarUrl || null,
+      addresses: Array.isArray(addresses) ? addresses : [],
       createdAt: new Date(),
       updatedAt: new Date(),
     });
 
+    // --- Response ---
     res.status(201).json({
       success: true,
       message: "User registered successfully",
       data: {
-        name: newUser.name,
+        id: newUser._id,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
         email: newUser.email,
         phone: newUser.phone,
         role: newUser.role,
+        avatarUrl: newUser.avatarUrl,
+        addresses: newUser.addresses,
       },
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    console.error("Register Error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
   }
 });
 
@@ -59,11 +91,16 @@ router.post("/loginUser", async (req, res) => {
       $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
     });
 
-    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch)
-      return res.status(401).json({ success: false, message: "Invalid password" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid password" });
 
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
@@ -75,7 +112,12 @@ router.post("/loginUser", async (req, res) => {
       success: true,
       message: "Login successful",
       token,
-      user: { name: user.name, email: user.email, phone: user.phone, role: user.role },
+      user: {
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+      },
     });
   } catch (err) {
     res.status(500).json({ success: false, message: "Internal server error" });
