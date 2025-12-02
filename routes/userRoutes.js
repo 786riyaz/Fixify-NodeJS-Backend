@@ -1,26 +1,20 @@
 const express = require("express");
-const User = require("../models/User");
-const { log } = require("../utils/logger");
+const auth = require("../middleware/authMiddleware");
+const {
+  getMe,
+  updateMe,
+  getAllUsers,
+  getUserById,
+  deleteUser,
+} = require("../controllers/userController");
+
 const router = express.Router();
 
-router.get("/allUsersData", async (req, res) => {
-  try {
-    log("----------------------------------------");
-    log("API HIT: /allUsersData");
-    log("----------------------------------------");
+router.get("/me", auth, getMe);
+router.put("/me", auth, updateMe);
 
-    const users = await User.find().select({ _id: 0, __v: 0 });
-    log(`Fetched users: ${users.length}`);
-
-    res.status(200).json({
-      success: true,
-      count: users.length,
-      data: users,
-    });
-  } catch (err) {
-    log("ERROR in /allUsersData: " + err.message);
-    res.status(500).json({ success: false, message: "Error fetching users" });
-  }
-});
+router.get("/all", auth, getAllUsers);
+router.get("/:id", auth, getUserById);
+router.delete("/:id", auth, deleteUser);
 
 module.exports = router;

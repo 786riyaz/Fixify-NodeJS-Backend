@@ -1,0 +1,18 @@
+/project
+ ├── /config
+ │     └── db.js
+ ├── /controllers
+ │     ├── authController.js
+ │     ├── userController.js
+ │     └── serviceController.js
+ ├── /middleware
+ │     └── authMiddleware.js
+ ├── /models
+ │     ├── User.js
+ │     └── Service.js
+ ├── /routes
+ │     ├── authRoutes.js
+ │     ├── userRoutes.js
+ │     └── serviceRoutes.js
+ ├── server.js
+ └── package.json

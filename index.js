@@ -1,39 +1,45 @@
 require("dotenv").config();
-
 const express = require("express");
-const morgan = require("morgan");
 const cors = require("cors");
-const connectDB = require("./config/db");
+const morgan = require("morgan");
 
-const { logger, stream } = require("./utils/logger");
+const connectDB = require("./config/db");
+const { stream } = require("./utils/logger");
+
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const serviceRoutes = require("./routes/serviceRoutes");
+const errorMiddleware = require("./middleware/errorMiddleware");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./swagger.yaml");
+
+
 
 const app = express();
-app.use(express.json());
-app.use(cors());
 
 connectDB();
-
-// Morgan → Winston log file
+app.use(cors());
+app.use(express.json());
 app.use(morgan("combined", { stream }));
 
-// Morgan → Console (dev mode)
-app.use(morgan("dev"));
+// Add after routes
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/services", serviceRoutes);
 
-// Routes
-app.use("/", require("./routes/userRoutes"));
-app.use("/", require("./routes/authRoutes"));
-app.use("/", require("./routes/serviceRoutes"));
+app.use(errorMiddleware);
 
 app.get("/", (req, res) => {
-  logger.info("Root API requested");
-  res.send("Hello World! Fixify Server is running.");
+  res.send("Hello World! Field Service Management API is running.");
 });
 
-const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  // logger.info(`Server running at http://localhost:${port}`);
-  // console.log(`✓ Server running at http://localhost:${port}`);
-  console.log("Server is running...")
-  logger.info("Server is running...");
-});
+// after other app.use(...)
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+app.listen(process.env.PORT || 3000, () =>
+  console.log(`Server running on port ${process.env.PORT}`)
+);
+
