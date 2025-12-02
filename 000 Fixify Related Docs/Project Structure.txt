@@ -40,8 +40,8 @@ project/
 ├── swagger/
 │   └── swagger.yaml              # API documentation (OpenAPI 3.0.3)
 │
-├── .env                           # Environment variables
-├── .gitignore                     # Node ignore rules
+├── .env                          # Environment variables
+├── .gitignore                    # Node ignore rules
 ├── index.js                      # Main server file (Express boot)
 ├── package.json
 └── package-lock.json

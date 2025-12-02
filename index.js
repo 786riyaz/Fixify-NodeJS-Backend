@@ -21,6 +21,9 @@ const errorMiddleware = require("./middleware/errorMiddleware");
 
 //  App Initialization
 const app = express();
+// app.use("/public", express.static("public"));
+app.use("/uploads", express.static("public/uploads"));
+
 
 //  Database Connection
 connectDB();
@@ -52,7 +55,7 @@ app.use(express.json());
 app.use(morgan("combined", { stream }));
 
 //  Swagger API Documentation
-const swaggerDocument = YAML.load("./swagger.yaml");
+const swaggerDocument = YAML.load("./swagger/swagger.yaml");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //  Routes
