@@ -11,8 +11,8 @@ module.exports = async function sendOTP(email) {
   // Send OTP via email
   await sendEmail(
     email,
-    "Your OTP Code",
-    `Your OTP for password reset is: ${otp}. It is valid for 5 minutes.`
+    "Fixify Password Reset OTP",
+    `Your OTP for password reset is: ${otp}. <BR>It is valid for 5 minutes.`
   );
 
   return otp;

@@ -4,10 +4,27 @@ const User = require("../models/User");
 const Otp = require("../models/Otp");
 const sendOTP = require("../utils/sendOTP");
 
+// Default avatar URLs
+// const FEMALE_AVATAR = "http://localhost:5000/uploads/Profile_Pictures_1_F.jpg";
+// const MALE_AVATAR = "http://localhost:5000/uploads/Profile_Pictures_1_M.jpg";
+
+const FEMALE_AVATAR = "/uploads/Profile_Pictures_1_F.jpg";
+const MALE_AVATAR   = "/uploads/Profile_Pictures_1_M.jpg";
+
 // REGISTER USER
 exports.registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, phone, password, role, avatarUrl, addresses } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+      role,
+      avatarUrl,
+      addresses,
+      gender
+    } = req.body;
 
     if (!firstName || !lastName || !email || !phone || !password) {
       return res.status(400).json({
@@ -24,14 +41,23 @@ exports.registerUser = async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
+    // Determine default avatar based on gender
+    let finalAvatar = avatarUrl || null;
+
+    if (!finalAvatar && gender) {
+      if (gender === "female") finalAvatar = FEMALE_AVATAR;
+      if (gender === "male") finalAvatar = MALE_AVATAR;
+    }
+
     const newUser = await User.create({
       firstName,
       lastName,
       email,
       phone,
       passwordHash,
+      gender: gender || null,
       role: role || "customer",
-      avatarUrl: avatarUrl || null,
+      avatarUrl: finalAvatar,
       addresses: Array.isArray(addresses) ? addresses : [],
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -43,6 +69,7 @@ exports.registerUser = async (req, res) => {
       data: newUser,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
@@ -59,7 +86,8 @@ exports.loginUser = async (req, res) => {
     if (!user) return res.status(404).json({ success: false, message: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
-    if (!isMatch) return res.status(401).json({ success: false, message: "Invalid password" });
+    if (!isMatch)
+      return res.status(401).json({ success: false, message: "Invalid password" });
 
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
