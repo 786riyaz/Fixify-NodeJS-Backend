@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  title: Fixify API
+  title: Fixify Backend API
   version: 1.0.0
   description: Backend API for Fixify (auth, users, services)
 
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:5000
 
 components:
   securitySchemes:
@@ -146,9 +146,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterRequest'
+              $ref: "#/components/schemas/RegisterRequest"
       responses:
-        '201':
+        "201":
           description: User registered
           content:
             application/json:
@@ -158,8 +158,8 @@ paths:
                   success: { type: boolean }
                   message: { type: string }
                   data:
-                    $ref: '#/components/schemas/User'
-        '400':
+                    $ref: "#/components/schemas/User"
+        "400":
           description: Validation or duplicate error
 
   /auth/login:
@@ -171,9 +171,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              $ref: "#/components/schemas/LoginRequest"
       responses:
-        '200':
+        "200":
           description: Login successful
           content:
             application/json:
@@ -184,8 +184,8 @@ paths:
                   message: { type: string }
                   token: { type: string }
                   user:
-                    $ref: '#/components/schemas/User'
-        '401':
+                    $ref: "#/components/schemas/User"
+        "401":
           description: Invalid credentials
 
   /auth/profile:
@@ -195,7 +195,7 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Profile data (from token)
           content:
             application/json:
@@ -205,7 +205,7 @@ paths:
                   success: { type: boolean }
                   user:
                     type: object
-        '401':
+        "401":
           description: Unauthorized
 
   /auth/forgot-password:
@@ -217,9 +217,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ForgotPasswordRequest'
+              $ref: "#/components/schemas/ForgotPasswordRequest"
       responses:
-        '200':
+        "200":
           description: OTP sent
 
   /auth/verify-otp:
@@ -231,11 +231,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VerifyOtpRequest'
+              $ref: "#/components/schemas/VerifyOtpRequest"
       responses:
-        '200':
+        "200":
           description: OTP verified
-        '400':
+        "400":
           description: Invalid or expired OTP
 
   /auth/reset-password:
@@ -247,9 +247,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResetPasswordRequest'
+              $ref: "#/components/schemas/ResetPasswordRequest"
       responses:
-        '200':
+        "200":
           description: Password reset successful
 
   /users/me:
@@ -259,7 +259,7 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Current user
           content:
             application/json:
@@ -268,8 +268,8 @@ paths:
                 properties:
                   success: { type: boolean }
                   data:
-                    $ref: '#/components/schemas/User'
-        '401':
+                    $ref: "#/components/schemas/User"
+        "401":
           description: Unauthorized
 
     put:
@@ -282,9 +282,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
       responses:
-        '200':
+        "200":
           description: Updated user
 
   /users/all:
@@ -294,7 +294,7 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: List of users
           content:
             application/json:
@@ -306,7 +306,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/User'
+                      $ref: "#/components/schemas/User"
 
   /users/{id}:
     get:
@@ -321,7 +321,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: User found
           content:
             application/json:
@@ -330,7 +330,7 @@ paths:
                 properties:
                   success: { type: boolean }
                   data:
-                    $ref: '#/components/schemas/User'
+                    $ref: "#/components/schemas/User"
 
     delete:
       summary: Delete user by ID
@@ -344,7 +344,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: User deleted
 
   /services/services:
@@ -352,7 +352,7 @@ paths:
       summary: Get all services
       tags: [Services]
       responses:
-        '200':
+        "200":
           description: List of services
           content:
             application/json:
@@ -364,7 +364,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Service'
+                      $ref: "#/components/schemas/Service"
 
   /services/service:
     post:
@@ -375,9 +375,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ServiceCreateRequest'
+              $ref: "#/components/schemas/ServiceCreateRequest"
       responses:
-        '201':
+        "201":
           description: Service created
           content:
             application/json:
@@ -386,7 +386,7 @@ paths:
                 properties:
                   success: { type: boolean }
                   data:
-                    $ref: '#/components/schemas/Service'
+                    $ref: "#/components/schemas/Service"
 
   /services/service/{id}:
     put:
@@ -403,9 +403,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ServiceCreateRequest'
+              $ref: "#/components/schemas/ServiceCreateRequest"
       responses:
-        '200':
+        "200":
           description: Service updated
 
     delete:
@@ -418,5 +418,125 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Service deleted
+
+  /logs/backend-logs:
+    get:
+      summary: List all log files with metadata
+      tags: [Logs]
+      responses:
+        "200":
+          description: List of log files
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  files:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        filename: { type: string }
+                        size: { type: string, example: "12.45 KB" }
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          type: string
+                          format: date-time
+
+  /logs/backend-logs/{filename}:
+    get:
+      summary: Read full content of a log file
+      tags: [Logs]
+      parameters:
+        - in: path
+          name: filename
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Log file content
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  content: { type: string }
+
+  /logs/backend-logs/{filename}/download:
+    get:
+      summary: Download entire log file
+      tags: [Logs]
+      parameters:
+        - in: path
+          name: filename
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: File download
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+
+  /logs/backend-logs/{filename}/last/{count}:
+    get:
+      summary: Get last N lines from a log file
+      tags: [Logs]
+      parameters:
+        - in: path
+          name: filename
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: count
+          required: true
+          schema:
+            type: integer
+            example: 50
+      responses:
+        "200":
+          description: Last N lines of the log file
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  count: { type: integer }
+                  content: { type: string }
+
+  /logs/backend-logs/{filename}/last/{count}/download:
+    get:
+      summary: Download last N lines from a log file
+      tags: [Logs]
+      parameters:
+        - in: path
+          name: filename
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: count
+          required: true
+          schema:
+            type: integer
+            example: 100
+      responses:
+        "200":
+          description: Partial log download
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
