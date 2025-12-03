@@ -29,11 +29,8 @@ app.use("/uploads", express.static("public/uploads"));
 connectDB();
 
 //  Middlewares
-const allowedOrigins = [
-  "http://localhost:5000",
-  "http://localhost:5173",
-  "https://pfx9d576-5000.inc1.devtunnels.ms",
-];
+const allowedOrigins = JSON.parse(process.env.Allowed_Origins);
+console.log("Allowed Origins:", Allowed_Origins);
 // app.use(cors({ origin: "*" }));
 app.use(
   cors({
