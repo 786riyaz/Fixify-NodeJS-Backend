@@ -1,23 +1,27 @@
+// models/Booking.js
 const mongoose = require("mongoose");
 
 const BookingSchema = new mongoose.Schema(
   {
     customer_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",        // customer reference
+      ref: "User",
       required: true,
+      index: true,
     },
 
     service_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Service",     // service reference
+      ref: "Service",
       required: true,
+      index: true,
     },
 
     contractor_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",        // contractor reference
+      ref: "User",
       default: null,
+      index: true,
     },
 
     address: {
@@ -29,13 +33,14 @@ const BookingSchema = new mongoose.Schema(
     rejected_by: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",      // IDs of customer or contractor who rejected
+        ref: "User",
+        index: true,
       }
     ],
 
     issue_images: [
       {
-        type: String,     // store image URLs or filenames
+        type: String, // URL or file name
       }
     ],
 
@@ -50,10 +55,17 @@ const BookingSchema = new mongoose.Schema(
         "rejected"
       ],
       default: "pending",
+      index: true,
     }
   },
 
-  { timestamps: true }
+  {
+    timestamps: true, // createdAt, updatedAt
+  }
 );
+
+// Improve performance
+BookingSchema.index({ createdAt: -1 });
+BookingSchema.index({ updatedAt: -1 });
 
 module.exports = mongoose.model("Booking", BookingSchema);

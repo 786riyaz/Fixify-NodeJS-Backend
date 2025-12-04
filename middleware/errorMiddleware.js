@@ -1,3 +1,4 @@
+// /middleware/errorMiddleware.js
 module.exports = (err, req, res, next) => {
   console.error("🔥 ERROR:", err);
 

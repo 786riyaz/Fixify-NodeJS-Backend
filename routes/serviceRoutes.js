@@ -1,4 +1,4 @@
-// backend/routes/serviceRoutes.js
+// /routes/serviceRoutes.js
 const express = require("express");
 const {
   getServices,

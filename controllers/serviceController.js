@@ -1,4 +1,4 @@
-// backend/controllers/serviceController.js
+// controllers/serviceController.js
 const Service = require("../models/Service");
 
 // GET ALL SERVICES
