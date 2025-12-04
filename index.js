@@ -1,37 +1,36 @@
-//  Load Environment Variables
+// Load Environment Variables
 require("dotenv").config();
 
-//  Core Modules & Packages
+// Core Modules & Packages
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
 
-//  Internal Imports
+// Internal Imports
 const connectDB = require("./config/db");
 const { stream } = require("./utils/logger");
-const logRoutes = require("./routes/logRoutes");
 
+const logRoutes = require("./routes/logRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const serviceRoutes = require("./routes/serviceRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 
 const errorMiddleware = require("./middleware/errorMiddleware");
 
-//  App Initialization
+// App Initialization
 const app = express();
-// app.use("/public", express.static("public"));
+
 app.use("/uploads", express.static("public/uploads"));
 
-
-//  Database Connection
+// Database Connection
 connectDB();
 
-//  Middlewares
+// Middlewares
 const allowedOrigins = JSON.parse(process.env.Allowed_Origins);
-// console.log("Allowed Origins:", allowedOrigins);
-// app.use(cors({ origin: "*" }));
+
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -49,17 +48,18 @@ app.use(
 
 app.use(express.json());
 
-// Logging Middleware (Morgan)
+// Logging Middleware
 app.use(morgan("combined", { stream }));
 
-//  Swagger API Documentation
+// Swagger Docs
 const swaggerDocument = YAML.load("./swagger/swagger.yaml");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-//  Routes
+// ROUTES
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/services", serviceRoutes);
+app.use("/bookings", bookingRoutes);   // ✔ CORRECT PREFIX (no /api)
 
 // Log Routes
 app.use("/logs", logRoutes);
@@ -69,10 +69,10 @@ app.get("/", (req, res) => {
   res.send("Field Service Management API is Running...");
 });
 
-//  Error Handler (should be last route)
+// Error Handler
 app.use(errorMiddleware);
 
-//  Start Server
+// Start Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

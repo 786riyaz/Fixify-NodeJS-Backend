@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"firstName\": \"Riyaz\",\n  \"lastName\": \"Khan\",\n  \"email\": \"riyaz@example.com\",\n  \"phone\": \"9999999999\",\n  \"password\": \"StrongPass@123\",\n  \"role\": \"customer\",\n  \"avatarUrl\": \"https://example.com/a.png\",\n  \"addresses\": [\n    {\n      \"label\": \"Home\",\n      \"line1\": \"221 Baker Street\",\n      \"city\": \"London\",\n      \"postalCode\": \"400001\",\n      \"lat\": 19.07,\n      \"lng\": 72.87\n    }\n  ]\n}"
+							"raw": "{\n  \"firstName\": \"Arbaz\",\n  \"lastName\": \"Shaikh\",\n  \"email\": \"arbazshaikh@gmail.com\",\n  \"phone\": \"6351973814\",\n  \"password\": \"123\",\n  \"role\": \"customer\",\n  \"addresses\": [\n    {\n      \"label\": \"Home\",\n      \"line1\": \"221 Baker Street\",\n      \"city\": \"London\",\n      \"postalCode\": \"400001\",\n      \"lat\": 19.07,\n      \"lng\": 72.87\n    }\n  ],\n  \"gender\" :\"male\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/register",
@@ -49,7 +49,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"emailOrPhone\": \"moh.riyazpathan@gmail.com\",\n  \"password\": \"123\"\n}"
+							"raw": "{\n  \"emailOrPhone\": \"moh.riyazpathan@gmail.com\",\n  \"password\": \"1234\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/login",
@@ -99,7 +99,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"riyaz@example.com\"\n}"
+							"raw": "{\n  \"email\": \"moh.riyazpathan@gmail.com\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/forgot-password",
@@ -126,7 +126,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"riyaz@example.com\",\n  \"otp\": \"123456\"\n}"
+							"raw": "{\n  \"email\": \"moh.riyazpathan@gmail.com\",\n  \"otp\": \"163857\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/verify-otp",
@@ -153,7 +153,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"riyaz@example.com\",\n  \"otp\": \"123456\",\n  \"newPassword\": \"NewPass@123\"\n}"
+							"raw": "{\n  \"email\": \"moh.riyazpathan@gmail.com\",\n  \"otp\": \"163857\",\n  \"newPassword\": \"1234\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/reset-password",
@@ -212,7 +212,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"firstName\": \"RiyazKhan\",\n  \"lastName\": \"Pathan\",\n  \"email\":\"moh.riyazpathan@gmail.com\",\n  \"phone\":\"9909221451\",\n  \"role\":\"admin\",\n  \"passwordHash1\":\"123\"\n}"
+							"raw": "{\n  \"firstName\": \"RiyazKhan\",\n  \"lastName\": \"Pathan\",\n  \"email\":\"moh.riyazpathan@gmail.com\",\n  \"phone\":\"9909221451\",\n  \"role\":\"admin\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/users/me",
@@ -394,6 +394,286 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Logs",
+			"item": [
+				{
+					"name": "BackEnd Logs FileNames",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/logs/backend-logs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"logs",
+								"backend-logs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BackEnd Logs FileContent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/logs/backend-logs/2025-12-01.log",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"logs",
+								"backend-logs",
+								"2025-12-01.log"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BackEnd Logs Last FileContent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/logs/backend-logs/2025-12-01.log/last/10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"logs",
+								"backend-logs",
+								"2025-12-01.log",
+								"last",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BackEnd Logs File Download",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/logs/backend-logs/2025-12-01.log/download",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"logs",
+								"backend-logs",
+								"2025-12-01.log",
+								"download"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customer_id\": \"692fff09b0f6bc46c16bba74\",\n  \"service_id\": \"692f3d791166b1727bd9d46b\",\n  \"address\": {\n    \"line1\": \"Sanjar Park 2\",\n    \"city\": \"Ahmedabad\",\n    \"postalCode\": \"380028\"\n  },\n  \"issue_images\": [\n    \"img1.jpg\",\n    \"img2.jpg\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Bookings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/bookings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6931d0b2995aebc271a9340c"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"address\": {\n    \"line1\": \"Updated Address\",\n    \"city\": \"Ahmedabad\",\n    \"postalCode\": \"380050\"\n  },\n  \"issue_images\": [\n    \"new1.jpg\",\n    \"new2.jpg\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6931d0b2995aebc271a9340c"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Booking",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/bookings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6931d0b2995aebc271a9340c"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Contractor",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contractor_id\": \"69300ab739d6b0e7c2beeeca\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/:id/assign",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								":id",
+								"assign"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6931d0e9995aebc271a93411"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Booking",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": \"6931a93ef651b481edd5da86\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/:id/reject",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								":id",
+								"reject"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6931d0e9995aebc271a93411"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -423,7 +703,7 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://localhost:5000"
+			"value": "http://localhost:3000"
 		},
 		{
 			"key": "token",
@@ -439,7 +719,13 @@
 		},
 		{
 			"key": "base_url",
-			"value": ""
+			"value": "",
+			"disabled": true
+		},
+		{
+			"key": ":id",
+			"value": "",
+			"type": "default"
 		}
 	]
 }
