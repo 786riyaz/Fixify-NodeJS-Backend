@@ -30,7 +30,7 @@ connectDB();
 
 //  Middlewares
 const allowedOrigins = JSON.parse(process.env.Allowed_Origins);
-console.log("Allowed Origins:", Allowed_Origins);
+// console.log("Allowed Origins:", allowedOrigins);
 // app.use(cors({ origin: "*" }));
 app.use(
   cors({
@@ -76,5 +76,6 @@ app.use(errorMiddleware);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`✓ Server running at http://localhost:${PORT}`);
+  // console.log(`✓ Server running at http://localhost:${PORT}`);
+  console.log(`✓ Server running...`);
 });
