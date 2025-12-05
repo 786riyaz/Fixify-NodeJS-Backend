@@ -1,3 +1,4 @@
+// utils/sendOTP.js
 const Otp = require("../models/Otp");
 const generateOTP = require("./generateOTP");
 const sendEmail = require("./sendEmail");

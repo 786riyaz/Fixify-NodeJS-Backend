@@ -16,6 +16,8 @@ router.get(
   // customer may view only their own bookings; admin can view any customer's bookings
   (req, res, next) => {
     // allow customers and admin; contractors not allowed here
+    console.log("Authenticated user:", req.user);
+    console.log("Requested customerId:", req.params.customerId);
     if (req.user.role === "customer" && req.user.id !== req.params.customerId) {
       return res.status(403).json({ success: false, message: "Forbidden: cannot access other customer's bookings" });
     }
@@ -45,6 +47,8 @@ router.get(
   isAuthenticated,
   // contractor can only view their own; admin can view any contractor
   (req, res, next) => {
+    console.log("Authenticated user:", req.user);
+    console.log("Requested contractorId:", req.params.contractorId);
     if (req.user.role === "contractor" && req.user.id !== req.params.contractorId) {
       return res.status(403).json({ success: false, message: "Forbidden: cannot view other contractor's bookings" });
     }
@@ -85,7 +89,7 @@ router.delete("/:id", isAuthenticated, authorizeRoles("admin"), bookingControlle
 router.patch("/:id/cancel", isAuthenticated, bookingController.cancelBooking);
 
 /* Assign contractor: admin only */
-router.patch("/:id/assign", isAuthenticated, authorizeRoles("admin"), bookingController.assignContractor);
+router.patch("/:id/assign", isAuthenticated, authorizeRoles("contractor", "admin"), bookingController.assignContractor);
 
 /* Contractor rejects booking (append to rejected_by)
    - contractor must be authenticated and user_id in body must match req.user.id

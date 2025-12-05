@@ -379,6 +379,7 @@ exports.rejectBooking = async (req, res) => {
     }
 
     // If contractor, ensure they are rejecting as themselves
+    console.log("Rejecting booking:", id, "by user_id:", user_id, "authenticated user:", user);
     if (user.role === "contractor" && user.id !== user_id) {
       return res.status(403).json({ success: false, message: "Forbidden: contractor can only reject as themselves" });
     }
