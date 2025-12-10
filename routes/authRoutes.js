@@ -1,3 +1,4 @@
+// /routes/authRoutes.js
 const express = require("express");
 const {
   registerUser,
@@ -7,16 +8,19 @@ const {
   verifyOtp,
   resetPassword
 } = require("../controllers/authController");
-const authMiddleware = require("../middleware/authMiddleware");
+
+const { isAuthenticated } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
+// Public routes
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/profile", authMiddleware, getProfile);
-
 router.post("/forgot-password", forgotPassword);
 router.post("/verify-otp", verifyOtp);
 router.post("/reset-password", resetPassword);
+
+// Protected route
+router.get("/profile", isAuthenticated, getProfile);
 
 module.exports = router;

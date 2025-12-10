@@ -1,5 +1,6 @@
+// /routes/userRoutes.js
 const express = require("express");
-const auth = require("../middleware/authMiddleware");
+const { isAuthenticated } = require("../middleware/authMiddleware");
 const {
   getMe,
   updateMe,
@@ -11,13 +12,16 @@ const {
 
 const router = express.Router();
 
-router.get("/me", auth, getMe);
-router.put("/me", auth, updateMe);
+// Authenticated user info
+router.get("/me", isAuthenticated, getMe);
+router.put("/me", isAuthenticated, updateMe);
 
-router.post("/change-password", auth, changePassword);
+// Change password
+router.post("/change-password", isAuthenticated, changePassword);
 
-router.get("/all", auth, getAllUsers);
-router.get("/:id", auth, getUserById);
-router.delete("/:id", auth, deleteUser);
+// Admin-only routes (optional: add authorizeRoles("admin"))
+router.get("/all", isAuthenticated, getAllUsers);
+router.get("/:id", isAuthenticated, getUserById);
+router.delete("/:id", isAuthenticated, deleteUser);
 
 module.exports = router;
