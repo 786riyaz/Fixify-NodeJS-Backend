@@ -31,7 +31,9 @@ const app = express();
 app.use("/uploads", express.static("public/uploads"));
 
 // Database Connection
-connectDB();
+connectDB().catch((err) => {
+  console.error("Initial DB connection error:", err.message);
+});
 
 // CORS
 const allowedOrigins = JSON.parse(process.env.Allowed_Origins || "[]");
