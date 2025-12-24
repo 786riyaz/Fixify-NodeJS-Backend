@@ -1,20 +1,30 @@
 // config/db.js
 const mongoose = require("mongoose");
 
+let isConnected = false;
+
 const connectDB = async () => {
-  console.log("Trying to Connecting MongoDB...");
+  if (isConnected) {
+    return;
+  }
+
+  console.log("Trying to connect MongoDB...");
 
   try {
-    // const conn = await mongoose.connect(process.env.MONGODB_URI, {
-    await mongoose.connect(process.env.MONGODB_URI, {
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
       dbName: process.env.DatabaseName,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
     });
 
-    // console.log(`✓ MongoDB connected: ${conn.connection.host}`);
-    console.log(`✓ MongoDB connected.`);
+    isConnected = true;
+
+    console.log("✓ MongoDB connected:", conn.connection.name);
   } catch (error) {
     console.error("✗ MongoDB connection failed:", error.message);
-    process.exit(1);
+
+    // ❌ DO NOT exit the process in serverless
+    throw error;
   }
 };
 
