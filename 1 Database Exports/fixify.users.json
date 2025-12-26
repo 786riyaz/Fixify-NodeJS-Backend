@@ -183,4 +183,25 @@
     "$date": "2025-12-03T10:02:31.263Z"
   },
   "__v": 0
+},
+{
+  "_id": {
+    "$oid": "694d03837202299aeb02522b"
+  },
+  "firstName": "Admin",
+  "lastName": "1",
+  "email": "admin1@gmail.com",
+  "phone": "9909221455",
+  "passwordHash": "$2b$10$LVjydNPrwdE.xCpFWncx2ebiHon43IgZA/JmZYRB9k8xJpnB4ldzm",
+  "gender": "male",
+  "role": "admin",
+  "avatarUrl": "/uploads/Profile_Pictures_1_M.jpg",
+  "addresses": [],
+  "createdAt": {
+    "$date": "2025-12-25T09:27:31.893Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-25T09:27:31.893Z"
+  },
+  "__v": 0
 }]
