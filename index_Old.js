@@ -6,6 +6,9 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const path = require("path");
+
+// Swagger (loaded conditionally)
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
 
@@ -24,13 +27,16 @@ const errorMiddleware = require("./middleware/errorMiddleware");
 // App Initialization
 const app = express();
 
+// Static files
 app.use("/uploads", express.static("public/uploads"));
 
 // Database Connection
-connectDB();
+connectDB().catch((err) => {
+  console.error("Initial DB connection error:", err.message);
+});
 
-// Middlewares
-const allowedOrigins = JSON.parse(process.env.Allowed_Origins);
+// CORS
+const allowedOrigins = JSON.parse(process.env.Allowed_Origins || "[]");
 
 app.use(
   cors({
@@ -47,16 +53,21 @@ app.use(
   })
 );
 
+// Body parser
 app.use(express.json());
 
 // Logging Middleware
 app.use(morgan("combined", { stream }));
 
-// Swagger Docs
-const swaggerDocument = YAML.load("./swagger/swagger.yaml");
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// ✅ Swagger – ENABLE ONLY LOCALLY
+if (!process.env.VERCEL) {
+  const swaggerPath = path.resolve(__dirname, "swagger", "swagger.yaml");
+  const swaggerDocument = YAML.load(swaggerPath);
 
-// ROUTES
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+}
+
+// Routes
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/services", serviceRoutes);
@@ -65,7 +76,7 @@ app.use("/bookings", bookingRoutes);   // ✔ CORRECT PREFIX (no /api)
 // Log Routes
 app.use("/logs", logRoutes);
 
-// Default Route
+// Health Check / Default Route
 app.get("/", (req, res) => {
   res.send("Field Service Management API is Running...");
 });
@@ -73,7 +84,7 @@ app.get("/", (req, res) => {
 // Error Handler
 app.use(errorMiddleware);
 
-// Start Server
+// Start Server (local only – Vercel ignores this)
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
