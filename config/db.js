@@ -9,7 +9,7 @@ const connectDB = async () => {
   try {
     console.log("Trying to connect MongoDB...");
     console.log("Mongo URI exists:", !!process.env.MONGODB_URI);
-    console.log("Mongo URI prefix:", process.env.MONGODB_URI?.slice(0, 20));
+    console.log("Mongo URI prefix:", process.env.MONGODB_URI?.slice(0, 15));
 
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       dbName: process.env.DatabaseName || "fixify",

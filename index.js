@@ -51,11 +51,11 @@ const corsOptions = {
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "ngrok-skip-browser-warning"],
 };
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // ⭐ THIS LINE FIXES YOUR ERROR
+app.use(cors(corsOptions)); // ✅ KEEP THIS
+// ❌ REMOVE app.options(...)
 
 // Body parser
 app.use(express.json());
